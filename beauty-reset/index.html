@@ -1,16 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <script>
-        // Read token from query string and redirect to app deep link
-        const token = new URLSearchParams(window.location.search).get('token');
-        window.location.href = 'beautyassistant://reset-password?token=' + token;
-    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password – Beauty Assistant</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f9f6f2 0%, #f0e8df 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+            padding: 48px 36px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #3d2c2c;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #7a6a6a;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            display: block;
+            background: #c9946a;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #b8835a; }
+
+        .note {
+            font-size: 12px;
+            color: #b0a0a0;
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+
+        .error {
+            display: none;
+            margin-top: 20px;
+            padding: 12px 16px;
+            background: #fff3f3;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #c0392b;
+        }
+    </style>
 </head>
 
 <body>
-    <p>Opening Beauty Assistant app...</p>
+    <div class="card">
+        <div class="icon">✨</div>
+        <h1>Reset Your Password</h1>
+        <p>Tap the button below to open the Beauty Assistant app and set a new password.</p>
+
+        <a id="openBtn" href="#" class="btn">Open Beauty Assistant</a>
+
+        <p class="note">Make sure the app is installed on this device.</p>
+
+        <div class="error" id="errorMsg">
+            Could not open the app automatically.<br/>
+            Please make sure <strong>Beauty Assistant</strong> is installed and try again.
+        </div>
+    </div>
+
+    <script>
+        const token = new URLSearchParams(window.location.search).get('token');
+        const deepLink = 'beautyassistant://reset-password?token=' + token;
+        const btn = document.getElementById('openBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        btn.href = deepLink;
+
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Attempt to open the app via the custom scheme
+            window.location.href = deepLink;
+
+            // Show error hint after 2.5s if the app didn't open
+            setTimeout(function () {
+                errorMsg.style.display = 'block';
+            }, 2500);
+        });
+    </script>
 </body>
 
 </html>
